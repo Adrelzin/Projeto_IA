@@ -1,4 +1,3 @@
-#.venv\Scripts\activate
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
@@ -6,17 +5,12 @@ from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import SMOTE
 import joblib
 import warnings
-warnings.filterwarnings('ignore') #Ignora os warnings de funções que não funcionariam ou precisam ser mudadas
+warnings.filterwarnings('ignore') 
 
 def generate_data(n=500):
     """Gera dataset sintético balanceado"""
-    np.random.seed(42) #Semente de aleatoriedade, o valor 42, cria valores constantes e que não mudam todas vez que o código roda 
-    
-    #Dicionário
-    #radint(): Gera números inteiros aleatórios
-    #random.choice(): Gera binários de 1 ou 0
-    #n = Números de valores para gerar (Presente ali na função)
-    #p: Probabilidades (inventadas)
+    np.random.seed(42) 
+
     d = {
         'ages': np.random.randint(20, 85, n),
         'smoking': np.random.choice([0, 1], n, p=[0.4, 0.6]),
@@ -34,7 +28,6 @@ def generate_data(n=500):
         'chest_pain': np.random.choice([0, 1], n, p=[0.6, 0.4])
     }
     
-    #normal: Simula variabilidade natural
     risk = ((d['ages'] > 60) * 0.3 + d['smoking'] * 0.4 + d['yellow_fingers'] * 0.2 +
             d['chronic_disease'] * 0.25 + d['coughing'] * 0.3 + d['shortness_breath'] * 0.35 +
             d['chest_pain'] * 0.3 + d['wheezing'] * 0.25 + d['fatigue'] * 0.15 +
