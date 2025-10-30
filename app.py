@@ -4,7 +4,6 @@ import joblib
 
 st.set_page_config(page_title="Previsão de Câncer Pulmonar", layout="centered")
 
-# Carregar modelo e features
 try:
     modelo = joblib.load("modelo_random_forest.pkl")
     features = joblib.load("features.pkl")
@@ -22,7 +21,6 @@ st.markdown("Preencha os dados abaixo para estimar a probabilidade de câncer pu
 def yesno_to_int(val):
     return 1 if val == "Sim" else 0
 
-# Criar colunas
 col1, col2 = st.columns(2)
 
 with col1:
@@ -45,7 +43,6 @@ with col2:
     dificuldade_engolir = st.selectbox("Dificuldade ao Engolir", ("Não", "Sim"), index=0)
     dor_peito = st.selectbox("Dor no Peito", ("Não", "Sim"), index=0)
 
-# Montar entrada
 valores = {
     "AGE": idade,
     "SMOKING": yesno_to_int(fumante),
@@ -69,7 +66,6 @@ entrada = pd.DataFrame([entrada_dict], columns=features)
 with st.expander("Ver dados de entrada"):
     st.dataframe(entrada, use_container_width=True)
 
-# Previsão
 if st.button("Realizar Previsão", type="primary", use_container_width=True):
     try:
         proba = modelo.predict_proba(entrada)[0]
@@ -79,13 +75,11 @@ if st.button("Realizar Previsão", type="primary", use_container_width=True):
         st.markdown("---")
         st.subheader("Resultado da Previsão")
         
-        # Resultado principal
         if prob_cancer >= 50:
             st.error(f"**Alto Risco de Câncer Pulmonar**")
         else:
             st.success(f"**Baixo Risco de Câncer Pulmonar**")
         
-        # Métrica com barra
         st.metric(
             label="Probabilidade de Câncer Pulmonar",
             value=f"{prob_cancer:.1f}%"
@@ -93,7 +87,6 @@ if st.button("Realizar Previsão", type="primary", use_container_width=True):
         
         st.progress(prob_cancer / 100)
         
-        # Detalhes
         col_a, col_b = st.columns(2)
         with col_a:
             st.metric("Probabilidade Negativo", f"{prob_normal:.1f}%")
